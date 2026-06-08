@@ -30,7 +30,8 @@ public class MapService {
     public MapPinsResponse getPins() {
 
         List<MapPinResponse> requests =
-                helpRequestRepository.findAll()
+                helpRequestRepository
+                        .findAllByOrderByUrgencyScoreDescCreatedAtDesc()
                         .stream()
                         .map(this::toRequestPin)
                         .toList();

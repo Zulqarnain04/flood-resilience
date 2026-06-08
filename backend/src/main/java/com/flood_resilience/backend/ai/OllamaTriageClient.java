@@ -4,7 +4,6 @@ import tools.jackson.databind.ObjectMapper;
 import com.flood_resilience.backend.ai.dto.OllamaChatRequest;
 import com.flood_resilience.backend.ai.dto.OllamaChatResponse;
 import com.flood_resilience.backend.ai.dto.OllamaMessage;
-import com.flood_resilience.backend.common.exception.TriageUnavailableException;
 import com.flood_resilience.backend.dto.response.TriageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,19 +103,27 @@ public class OllamaTriageClient implements AiTriageClient {
                     TriageResult.class
             );
 
-        } catch (TriageUnavailableException ex) {
-            throw ex;
         } catch (Exception ex) {
 
-            log.error(
-                    "Ollama request failed",
-                    ex
+            log.warn(
+                    "Ollama triage failed, returning safe fallback: {}",
+                    ex.toString()
             );
 
-            throw new TriageUnavailableException(
-                    "AI triage service is unavailable",
-                    ex
-            );
+            return fallbackResult();
         }
+    }
+
+    private TriageResult fallbackResult() {
+
+        return new TriageResult(
+                "AI triage unavailable - needs manual review",
+                "OTHER",
+                5,
+                5,
+                1,
+                "en",
+                List.of()
+        );
     }
 }

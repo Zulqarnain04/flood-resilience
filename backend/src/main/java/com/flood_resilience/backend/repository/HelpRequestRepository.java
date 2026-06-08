@@ -19,6 +19,8 @@ public interface HelpRequestRepository
             RequestCategory category
     );
 
+    List<HelpRequest> findAllByOrderByUrgencyScoreDescCreatedAtDesc();
+
     Optional<HelpRequest> findByClientRequestId(
             String clientRequestId
     );

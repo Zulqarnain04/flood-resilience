@@ -66,7 +66,7 @@ public class HelpRequestController {
 
     @GetMapping
     public ApiResponse<PageResponse<HelpRequestResponse>> getAllRequests(
-            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            @PageableDefault(size = 20, sort = {"urgencyScore", "createdAt"}, direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
 

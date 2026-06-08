@@ -38,19 +38,6 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(ex.getMessage()));
     }
 
-    @ExceptionHandler(TriageUnavailableException.class)
-    public ResponseEntity<ErrorResponse> handleTriageUnavailable(
-            TriageUnavailableException ex
-    ) {
-        log.warn("Triage unavailable: {}", ex.getMessage());
-
-        return ResponseEntity
-                .status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(ErrorResponse.of(
-                        "AI triage is temporarily unavailable. Please retry."
-                ));
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(
             IllegalArgumentException ex
